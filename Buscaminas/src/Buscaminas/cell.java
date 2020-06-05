@@ -12,7 +12,7 @@ package Buscaminas;
 public class cell {
 
     public enum cont {
-        zero, one, two, three, four, five, six, seven, eight, bomb, mark
+        zero, one, two, three, four, five, six, seven, eight, bomb
     }
 
     public String prisoner;
@@ -21,12 +21,6 @@ public class cell {
 
     public cell() {
         this.prisoner = cont.zero.toString();
-        this.locked = true;
-        this.marked = false;
-    }
-
-    public cell(String num) {
-        this.prisoner = num;
         this.locked = true;
         this.marked = false;
     }

@@ -22,82 +22,81 @@ public class Buscaminas {
 
         introduction();
 
-        System.out.println("\n" + prisonHustle.toString());
-        while (!Win()) {
-//            for (int i = 0; i < prisonHustle.prisoncell.length; i++) {
-//                for (int j = 0; j < prisonHustle.prisoncell[1].length; j++) {
-//                    System.out.print(prisonHustle.prisoncell[i][j].prisoner + " ");
-//                }
-//                System.out.println();
-//            }
+        do {
+            System.out.println("\n" + prisonHustle.toString());
             System.out.println("-------------------------");
             System.out.print("What inmate to check: ");
             response = sc.nextLine();
 
             try {
-                readCommand(response.split(" "));
+                readCommand(response);
             } catch (Exception e) {
-                switch (response.toLowerCase()) {
 
-                    case "reveal":
-                        for (int i = 0; i < prisonHustle.prisoncell.length; i++) {
-                            for (int j = 0; j < prisonHustle.prisoncell[1].length; j++) {
-                                prisonHustle.prisoncell[i][j].locked = !prisonHustle.prisoncell[i][j].locked;
-                            }
-                        }
-                        break;
-
-                    case "exit":
-                        System.exit(0);
-                        break;
-
-                    default:
-                        if (response.contains(",")) {
-                            try {
-                                prisonHustle.open(Integer.parseInt(response.split(",")[0]), Integer.parseInt(response.split(",")[1]));
-                            } catch (Exception ex) {
-                                System.out.println("You seem to have lost all memory, because I just told you how to WRITE ya dingus. Try again!");
-                            }
-                        } else {
-                            System.out.println("You seem to have lost all memory, because I just told you how to WRITE ya dingus. Try again!");
-                        }
-                        break;
-                }
             }
-            System.out.println("\n" + prisonHustle.toString());
-        }
+        } while (!win());
         System.out.println("\nEnoguh for now! Your shift is over, see you tomorrow");
 
     }
 
-    public void readCommand(String[] s) {
-        int x = Integer.parseInt(s[1].split(",")[0]), y = Integer.parseInt(s[1].split(",")[1]);
-        switch (s.length) {
-            case 2:
-                switch (s[0].toLowerCase()) {
-                    case "mark":
-                        prisonHustle.prisoncell[x][y].marked = !prisonHustle.prisoncell[x][y].marked;
-                        break;
+    public void readCommand(String z) {
 
-                    case "bomb":
-                        if (!prisonHustle.prisoncell[x][y].prisoner.equals("bomb")) {
-                            prisonHustle.prisoncell[x][y].prisoner = "bomb";
-                            prisonHustle.markbomb(x, y);
-                            prisonHustle.bombCounter++;
-                        } else {
-                            System.out.println("There's already a bomb there");
+        try {
+            String[] s = z.split(" ");
+            int x = Integer.parseInt(s[1].split(",")[0]), y = Integer.parseInt(s[1].split(",")[1]);
+            switch (s.length) {
+                case 2:
+                    switch (s[0].toLowerCase()) {
+                        case "mark":
+                            prisonHustle.prisoncell[x][y].marked = !prisonHustle.prisoncell[x][y].marked;
+                            break;
+
+                        case "bomb":
+                            if (!prisonHustle.prisoncell[x][y].prisoner.equals("bomb")) {
+                                prisonHustle.prisoncell[x][y].prisoner = "bomb";
+                                prisonHustle.markbomb(x, y);
+                                prisonHustle.bombCounter++;
+                            } else {
+                                System.out.println("There's already a bomb there");
+                            }
+                            break;
+
+                    }
+                    break;
+                default:
+                    System.out.println("You seem to have lost all memory, because I just told you how to WRITE ya dingus. Try again!");
+                    break;
+            }
+        } catch (Exception e) {
+            switch (response.toLowerCase()) {
+                case "reveal":
+                    for (int i = 0; i < prisonHustle.prisoncell.length; i++) {
+                        for (int j = 0; j < prisonHustle.prisoncell[1].length; j++) {
+                            prisonHustle.prisoncell[i][j].locked = !prisonHustle.prisoncell[i][j].locked;
                         }
-                        break;
+                    }
+                    break;
 
-                }
-                break;
-            default:
-                System.out.println("You seem to have lost all memory, because I just told you how to WRITE ya dingus. Try again!");
-                break;
+                case "exit":
+                    System.exit(0);
+                    break;
+
+                default:
+                    if (response.contains(",")) {
+                        try {
+                            prisonHustle.open(Integer.parseInt(response.split(",")[0]), Integer.parseInt(response.split(",")[1]));
+                        } catch (Exception ex) {
+                            System.out.println("You seem to have lost all memory, because I just told you how to WRITE ya dingus. Try again!");
+                        }
+                    } else {
+                        System.out.println("You seem to have lost all memory, because I just told you how to WRITE ya dingus. Try again!");
+                    }
+                    break;
+            }
         }
+
     }
 
-    public boolean Win() {
+    public boolean win() {
         int win = 0;
         for (int i = 0; i < prisonHustle.prisoncell.length && win <= prisonHustle.bombCounter; i++) {
             for (int j = 0; j < prisonHustle.prisoncell[1].length && win <= prisonHustle.bombCounter; j++) {
